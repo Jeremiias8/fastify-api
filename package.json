@@ -1,0 +1,26 @@
+{
+  "name": "fastify-api",
+  "version": "1.0.0",
+  "description": "API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [
+    "Fastify",
+    "API"
+  ],
+  "author": "Jeremias",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "@fastify/formbody": "^7.4.0",
+    "@fastify/mongodb": "^8.0.0",
+    "config": "^3.3.11",
+    "express": "^4.18.3",
+    "fastify": "^4.26.2",
+    "mongoose": "^8.2.2",
+    "nodemon": "^3.1.0"
+  }
+}

@@ -1,0 +1,4 @@
+
+{
+    "mongoURI": "mongodb://user:password@host:27017/dbname"
+}
