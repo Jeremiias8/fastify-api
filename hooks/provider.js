@@ -29,8 +29,8 @@ exports.GeneradorDeLlaveMagicaThirdParty = async (ms) => {
 
 exports.fetchDataSensible = async (key) => {
 
-    await retraso(700)
-    const data = { sensitive: true }
+    await retraso(700);
+    const data = { sensitive: true };
 
     if (key === MAGIC_KEY) {
         return data

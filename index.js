@@ -7,9 +7,34 @@ const formbody = require("@fastify/formbody");
 const db = require('./integrations/mongodb');
 db.connect();
 
+const customerRoutes = require('./customer-routes');
+const {setup, delay} = require('./delay-incoming-requests');
+
 fastify.register(cors);
 fastify.register(routes);
 fastify.register(formbody);
+
+fastify.register(setup);
+
+// URL sin bloqueo
+fastify.get('/ping', (req, reply) => {
+
+    reply.send({ error: false, ready: req.fastify.magicKey !== null });
+});
+
+fastify.post('/webhook', (req, reply) => {
+
+    const {magicKey} = req.body;
+    req.fastify.magicKey = magicKey;
+
+    req.log.info('Listo para las peticiones!');
+
+    reply.send({ error: false });
+});
+
+// blocked URLs - plugin's construction calling it `delay`
+fastify.register(delay(customerRoutes), { prefix: '/v1' });
+fastify.listen({port: '1850'});
 
 // mongodb fastify register
 fastify.register(require('@fastify/mongodb'), {
