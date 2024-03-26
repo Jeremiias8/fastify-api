@@ -7,8 +7,8 @@ const formbody = require("@fastify/formbody");
 const db = require('./integrations/mongodb');
 db.connect();
 
-const customerRoutes = require('./customer-routes');
-const {setup, delay} = require('./delay-incoming-requests');
+const customerRoutes = require('./routes/customer-routes');
+const {setup, delay} = require('./incomingReqs/delay-incoming-reqs');
 
 fastify.register(cors);
 fastify.register(routes);
