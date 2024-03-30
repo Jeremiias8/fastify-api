@@ -1,6 +1,6 @@
 
 const fp = require('fastify-plugin');
-const provider = require('./hooks/provider.js');
+const provider = require('../hooks/provider');
 
 const TIEMPO_USUAL_EN_MS = 5000;
 

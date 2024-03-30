@@ -1,5 +1,5 @@
 
-const {fetch} = require('undici');
+// const {fetch} = require('undici');
 const {setTimeOut} = require('node:timers/promises');
 
 const MAGIC_KEY = '25478';
