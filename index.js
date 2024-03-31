@@ -4,15 +4,43 @@ const fastify = require('fastify')({ logger: true });
 const cors = require("@fastify/cors");
 const routes = require("./routes/routes");
 const formbody = require("@fastify/formbody");
+const fileUpload = require('fastify-file-upload');
+
+// security headers for fastify
+const helmet = require('@fastify/helmet');
+// plugin - to serve static files as fast as possible
+const static = require('@fastify/static');
+const path = require('path');
+const _ = require('lodash');
+
 const db = require('./integrations/mongodb');
+const view = require('@fastify/view');
+const mustache = require('mustache');
 db.connect();
 
 const customerRoutes = require('./routes/customer-routes');
 const {setup, delay} = require('./incomingReqs/delay-incoming-reqs');
 
+fastify.register(helmet);
 fastify.register(cors);
 fastify.register(routes);
 fastify.register(formbody);
+fastify.register(fileUpload, {
+    limits: {
+        fileSize: 50 * 1024 * 1024
+    }
+});
+
+fastify.register(static, {
+    root: path.join(__dirname, 'public'),
+    prefix: '/public/'
+}); 
+
+fastify.register(view, {
+    engine: {
+        mustache: mustache
+    }
+});
 
 fastify.register(setup);
 
@@ -65,6 +93,31 @@ fastify.post('/submit', async (req, reply) => {
 });
 
 require('./modules/tasks/tasks.routes')(fastify);
+
+fastify.get('/statics', (req, reply) => {
+    reply.sendFile('/statics/index.html');
+});
+
+fastify.get('/docs', (req, reply) => {
+
+    let routes = [];
+
+    fastify.routes.forEach(item => {
+        _.mapValues(item, endpoint => {
+            routes.push({
+                path: endpoint.url,
+                method: endpoint.method
+            });
+        });
+    });
+
+    reply.view('/public/docs/docs.html', {
+        app: {
+            title: 'Testing template con Fastify y Mustache'
+        },
+        endpoint: routes
+    });
+});
 
 fastify.get('/test', (req, reply) => {
     return reply.send({

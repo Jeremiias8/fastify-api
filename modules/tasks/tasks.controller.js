@@ -69,7 +69,7 @@ module.exports = class Tasks {
         });
     }
 
-    static uploadImagesO(req, reply) {
+    static uploadImages(req, reply) {
         let images = null;
         let oldTask = null;
 
@@ -94,6 +94,8 @@ module.exports = class Tasks {
             TasksModel.findByIdAndUpdate(req.params.id, {
                 images: _.concat(oldTask.images || [], 
                     _.map(images, img => img.url))
+            }, {new: true, safe: true}).exec((err, doc) => {
+                reply.send(doc);
             });
         }); 
     }

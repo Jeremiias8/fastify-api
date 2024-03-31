@@ -1,6 +1,6 @@
 
 const config = require('../config/config');
-const Cloudinary = require('cloudinary');
+const Cloudinary = require('fastify-cloudinary');
 const async = require('async');
 const _ = require('lodash');
 
@@ -15,7 +15,7 @@ module.exports = class Cloudy {
 
         async.each(_.isArray(images.file) ? images.file : [images.file], (file, cb) => {
 
-            if (file && file_path) {
+            if (file && file.data) {
                 Cloudinary.uploader.upload(`data:${file.mimetype};base64, ${file.data.toString('base64')}`, res => {
                     uploaded.push({
                         url: res.url

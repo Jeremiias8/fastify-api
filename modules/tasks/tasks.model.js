@@ -9,6 +9,10 @@ const schema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    images: [{
+        type: String,
+        trim: true
+    }],
     completed: {
         type: Boolean,
         default: false
